@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Access</title>
+</head>
+<body style="background-color: #333; color: #fff; text-align: center; padding-top: 30px;">
+    <h1>Admin Panel Access</h1>
+
+
+    <textarea id="adminToken" style="width:80%;height:100px;"></textarea><br><br>
+    <button onclick="accessAdmin()">Access Admin Panel</button>
+
+    <div id="adminResult" style="margin-top: 30px;"></div>
+
+    <script>
+        document.getElementById('adminToken').value = localStorage.getItem('token');
+
+        async function accessAdmin() {
+            const token = document.getElementById('adminToken').value;
+
+            const response = await fetch('/admin', {
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+
+            if (response.status === 200) {
+                const text = await response.text();
+                document.getElementById('adminResult').innerHTML = `<h2 style="color:lime;">${text}</h2>`;
+            } else {
+                document.getElementById('adminResult').innerHTML = `<h2 style="color:red;">Access Denied</h2>`;
+            }
+        }
+    </script>
+</body>
+</html>
